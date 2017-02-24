@@ -20,5 +20,5 @@ libraryDependencies ++= Seq(
 //resolvers += "Gilt Group Bintray Repo" at "http://dl.bintray.com/giltgroupe/maven"
 //libraryDependencies += "uk.gov.nationalarchives" % "csv-validator-java-api" % "1.1.5"
 
-// https://mvnrepository.com/artifact/net.liftweb/lift-json
-libraryDependencies += "net.liftweb" % "lift-json" % "2.0"
+// https://mvnrepository.com/artifact/io.circe/circe-core_2.11
+libraryDependencies += "io.circe" % "circe-core_2.11" % "0.7.0"

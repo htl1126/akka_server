@@ -17,9 +17,6 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.FileIO
 
-import net.liftweb.json.DefaultFormats
-import net.liftweb.json._
-
 object DataServer extends App {
   // used to run the actors
   implicit val system = ActorSystem("my-system")
@@ -28,7 +25,7 @@ object DataServer extends App {
 
   val uploadDirectory = "./upload_files/"
   var fileCount = 0
-  var fileRef = Map[Int, String]()
+  var fileRef = Map[Int, (String, String)]()
 
   def deleteFile(filename: String): Boolean = {new File(filename).delete()}
   def createUploadDir(dirname: String): Unit = {
@@ -59,12 +56,6 @@ object DataServer extends App {
   }
 
   val route =
-    path("hello") { // to be removed
-      get {
-        complete("hello Akka-HTTP DSL")
-      }
-    } ~
-    // ref: http://stackoverflow.com/questions/37430141/file-upload-using-akka-http
     path("fileUpload") {
       post {
         fileUpload("fileUpload") {
@@ -81,7 +72,7 @@ object DataServer extends App {
             onSuccess(writeResult) { result =>
               result.status match {
                 case Success(_) => 
-                  fileRef += (fileCount -> fileName)
+                  fileRef += (fileCount -> (fileName, fileExt))
                   fileCount += 1
                   // Check validity of JSON/CSV file here
                   if (fileExt == "csv")
@@ -124,6 +115,27 @@ object DataServer extends App {
                 case Failure(e) => throw e
               }
             }
+        }
+      }
+    } ~
+    pathPrefix("header" / IntNumber) { refId =>
+      get {
+        if (fileRef.contains(refId))
+        {
+          val record = fileRef(refId)
+          if (record._2 == "csv")
+              complete("csv file")
+          else
+              complete("json file")
+        }
+        else
+            complete("Invalid reference")
+      }
+    } ~
+    path("join") {
+      post{ // need to be post
+        parameters("tbl1", "tbl2", "column") { (tbl1, tbl2, column) =>
+          complete(tbl1 + " " + tbl2 + " " + column)
         }
       }
     }

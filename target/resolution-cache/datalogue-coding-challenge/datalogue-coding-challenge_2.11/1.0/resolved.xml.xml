@@ -4,7 +4,7 @@
 		module="datalogue-coding-challenge_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20170224101444"
+		publication="20170224150537"
 	>
 		<description>
 		Datalogue Coding Challenge
@@ -40,6 +40,6 @@
 		<dependency org="com.typesafe.akka" name="akka-http-spray-json_2.11" rev="10.0.3" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.akka" name="akka-http-jackson_2.11" rev="10.0.3" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.akka" name="akka-http-xml_2.11" rev="10.0.3" conf="compile->default(compile)"/>
-		<dependency org="net.liftweb" name="lift-json" rev="2.0" conf="compile->default(compile)"/>
+		<dependency org="io.circe" name="circe-core_2.11" rev="0.7.0" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
